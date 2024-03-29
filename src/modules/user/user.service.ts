@@ -8,16 +8,16 @@ import { User, UserDocument } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
-
+    constructor(
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
+    ) {}
 
     async create(createUserDto: CreateUserDto): Promise<UserDocument> {
         const salt = await bcrypt.genSalt(10);
         const data = {
             ...createUserDto,
             password: await bcrypt.hash(createUserDto.password, salt),
-        }
+        };
         return this.userModel.create(data);
     }
 
